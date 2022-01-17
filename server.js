@@ -2,9 +2,6 @@ import http from 'http';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { PrismaClient } from '@prisma/client';
-
-// const prisma = new PrismaClient();
 
 dotenv.config();
 
@@ -36,7 +33,6 @@ const serverStart = async () => {
 		});
 	} catch (err) {
 		console.log(err);
-		await prisma.$disconnect();
 	}
 };
 
