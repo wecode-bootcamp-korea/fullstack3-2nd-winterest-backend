@@ -1,39 +1,39 @@
 {
-	"name": "fullstack3-2nd-winterest-backend",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"start": "nodemon --exec babel-node server.js",
-		"lint": "eslint ."
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/wecode-bootcamp-korea/fullstack3-2nd-winterest-backend.git"
-	},
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/wecode-bootcamp-korea/fullstack3-2nd-winterest-backend/issues"
-	},
-	"homepage": "https://github.com/wecode-bootcamp-korea/fullstack3-2nd-winterest-backend#readme",
-	"dependencies": {
-		"@prisma/client": "^3.8.1",
-		"bcrypt": "^5.0.1",
-		"cors": "^2.8.5",
-		"dotenv": "^13.0.1",
-		"express": "^4.17.2",
-		"jsonwebtoken": "^8.5.1"
-	},
-	"devDependencies": {
-		"@babel/core": "^7.16.7",
-		"@babel/node": "^7.16.8",
-		"@babel/preset-env": "^7.16.8",
-		"eslint": "^8.7.0",
-		"eslint-config-prettier": "^8.3.0",
-		"eslint-plugin-prettier": "^4.0.0",
-		"nodemon": "^2.0.15",
-		"prettier-plugin-prisma": "^3.8.0",
-		"prisma": "^3.8.1"
-	}
+  "name": "fullstack3-2nd-winterest-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node server.js",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wecode-bootcamp-korea/fullstack3-2nd-winterest-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wecode-bootcamp-korea/fullstack3-2nd-winterest-backend/issues"
+  },
+  "homepage": "https://github.com/wecode-bootcamp-korea/fullstack3-2nd-winterest-backend#readme",
+  "dependencies": {
+    "@prisma/client": "^3.8.1",
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^13.0.1",
+    "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.8",
+    "eslint": "^8.7.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.15",
+    "prettier-plugin-prisma": "^3.8.0",
+    "prisma": "^3.8.1"
+  }
 }

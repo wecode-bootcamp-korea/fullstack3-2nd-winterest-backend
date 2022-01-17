@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(routes);
 
 app.use('/ping', (req, res) => {
-	return res.status(200).json({ message: 'pong' });
+  return res.status(200).json({ message: 'pong' });
 });
 
 // Create a server
@@ -27,13 +27,13 @@ const server = http.createServer(app);
 
 // Run my server
 const serverStart = async () => {
-	try {
-		server.listen(PORT, () => {
-			console.log(`server is listening on PORT ${PORT}`);
-		});
-	} catch (err) {
-		console.log(err);
-	}
+  try {
+    server.listen(PORT, () => {
+      console.log(`server is listening on PORT ${PORT}`);
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 serverStart();
