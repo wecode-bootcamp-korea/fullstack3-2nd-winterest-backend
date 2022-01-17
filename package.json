@@ -1,5 +1,5 @@
 {
-	"name": "fullstack3-2nd-weterest-backend",
+	"name": "fullstack3-2nd-winterest-backend",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
@@ -9,14 +9,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/wecode-bootcamp-korea/fullstack3-2nd-weterest-backend.git"
+		"url": "git+https://github.com/wecode-bootcamp-korea/fullstack3-2nd-winterest-backend.git"
 	},
 	"author": "",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/wecode-bootcamp-korea/fullstack3-2nd-weterest-backend/issues"
+		"url": "https://github.com/wecode-bootcamp-korea/fullstack3-2nd-winterest-backend/issues"
 	},
-	"homepage": "https://github.com/wecode-bootcamp-korea/fullstack3-2nd-weterest-backend#readme",
+	"homepage": "https://github.com/wecode-bootcamp-korea/fullstack3-2nd-winterest-backend#readme",
 	"dependencies": {
 		"@prisma/client": "^3.8.1",
 		"bcrypt": "^5.0.1",
