@@ -1,0 +1,164 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Win {
+  id          Int       @id @default(autoincrement())
+  title       String?
+  description String?
+  imageUrl    String    @map("image_url") @db.VarChar(3000)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+  User        User      @relation(fields: [userId], references: [id])
+  userId      Int       @map("user_id")
+
+  tag       TagOnWin[]
+  winLike   WinLike[]
+  comment   Comment[]
+  userBoard UserBoardOnWin[]
+
+  @@map("win")
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  email      String?
+  password   String?
+  name       String
+  snsId      String?   @map("sns_id")
+  connetedAt DateTime? @map("connected_at")
+  verifiedAt DateTime? @map("verified_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime? @map("updated_at")
+
+  win         Win[]
+  interest    Interest[]
+  winLike     WinLike[]
+  comment     Comment[]
+  commentLike CommentLike[]
+  followerBy  Follow[]      @relation("follower")
+  following   Follow[]      @relation("following")
+  userBoard   UserBoard[]
+
+  @@map("user")
+}
+
+model Tag {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+
+  win      TagOnWin[]
+  interest Interest[]
+
+  @@map("tag")
+}
+
+model TagOnWin {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  Tag       Tag       @relation(fields: [tagId], references: [id])
+  tagId     Int       @map("tag_id")
+  Win       Win       @relation(fields: [winId], references: [id])
+  winId     Int       @map("win_id")
+
+  @@map("tag_and_win")
+}
+
+model Interest {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  User      User      @relation(fields: [userId], references: [id])
+  userId    Int       @map("user_id")
+  Tag       Tag       @relation(fields: [tagId], references: [id])
+  tagId     Int       @map("tag_id")
+
+  @@map("interest")
+}
+
+model WinLike {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  User      User     @relation(fields: [userId], references: [id])
+  userId    Int      @map("user_id")
+  Win       Win      @relation(fields: [winId], references: [id])
+  winId     Int      @map("win_id")
+
+  @@map("win_like")
+}
+
+model Comment {
+  id          Int       @id @default(autoincrement())
+  parent      Comment?  @relation("parent", fields: [parentId], references: [id])
+  predecessor Comment?  @relation("parent")
+  parentId    Int?      @unique
+  content     String
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+  User        User      @relation(fields: [userId], references: [id])
+  userId      Int       @map("user_id")
+  Win         Win       @relation(fields: [winId], references: [id])
+  winId       Int       @map("win_id")
+
+  commentLike CommentLike[]
+
+  @@map("comment")
+}
+
+model CommentLike {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  Comment   Comment  @relation(fields: [commentId], references: [id])
+  commentId Int      @map("comment_id")
+  User      User     @relation(fields: [userId], references: [id])
+  userId    Int      @map("user_id")
+
+  @@map("comment_like")
+}
+
+model Follow {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now()) @map("created_at")
+  follower    User     @relation("follower", fields: [followerId], references: [id])
+  followerId  Int      @map("follower_id")
+  following   User     @relation("following", fields: [followingId], references: [id])
+  followingId Int      @map("following_id")
+
+  @@map("follow")
+}
+
+model UserBoard {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  User      User      @relation(fields: [userId], references: [id])
+  userId    Int       @map("user_id")
+
+  win UserBoardOnWin[]
+
+  @@map("user_board")
+}
+
+model UserBoardOnWin {
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @map("updated_at")
+  Win         Win       @relation(fields: [winId], references: [id])
+  winId       Int       @map("win_id")
+  UserBoard   UserBoard @relation(fields: [userBoardId], references: [id])
+  userBoardId Int       @map("user_board_id")
+
+  @@map("user_board_and_win")
+}
