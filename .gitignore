@@ -170,4 +170,10 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
+# aws
+awsconfig.json
+
+# prisma migrations
+migrations/
+
 # End of https://www.toptal.com/developers/gitignore/api/macos,node
