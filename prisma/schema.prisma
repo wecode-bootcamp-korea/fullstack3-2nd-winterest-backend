@@ -101,8 +101,8 @@ model WinLike {
 model Comment {
   id          Int       @id @default(autoincrement())
   parent      Comment?  @relation("parent", fields: [parentId], references: [id])
-  predecessor Comment?  @relation("parent")
-  parentId    Int?      @unique
+  predecessor Comment[] @relation("parent")
+  parentId    Int?      @map("parent_id")
   content     String
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime? @map("updated_at")
