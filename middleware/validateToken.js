@@ -14,4 +14,4 @@ const validateToken = async (req, res, next) => {
   }
 };
 
-export default { validateToken };
+export default validateToken;
