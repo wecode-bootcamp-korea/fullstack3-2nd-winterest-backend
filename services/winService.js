@@ -7,8 +7,11 @@ aws.config.loadFromPath(path.join(__dirname, '..', '/awsconfig.json'));
 const s3 = new aws.S3();
 
 // 게시물 업로드
-const uploadWin = async (url, title, desc, userId) => {
+const uploadWin = async (url, title, desc, userId, tagName) => {
   const createdWinId = await winDao.createWin(url, title, desc, userId);
+
+  // tag 추가
+  const createTag = await winDao.createTag(tagName, createdWinId);
 
   return createdWinId;
 };
