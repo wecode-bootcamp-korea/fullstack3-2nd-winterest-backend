@@ -20,10 +20,10 @@ model Win {
   User        User      @relation(fields: [userId], references: [id])
   userId      Int       @map("user_id")
 
-  tag       TagOnWin[]
-  winLike   WinLike[]
-  comment   Comment[]
-  userBoard UserBoardOnWin[]
+  tag     TagOnWin[]
+  winLike WinLike[]
+  comment Comment[]
+  Board   BoardOnWin[]
 
   @@map("win")
 }
@@ -46,7 +46,7 @@ model User {
   commentLike CommentLike[]
   followerBy  Follow[]      @relation("follower")
   following   Follow[]      @relation("following")
-  userBoard   UserBoard[]
+  Board       Board[]
 
   @@map("user")
 }
@@ -138,7 +138,7 @@ model Follow {
   @@map("follow")
 }
 
-model UserBoard {
+model Board {
   id        Int       @id @default(autoincrement())
   name      String
   createdAt DateTime  @default(now()) @map("created_at")
@@ -146,19 +146,19 @@ model UserBoard {
   User      User      @relation(fields: [userId], references: [id])
   userId    Int       @map("user_id")
 
-  win UserBoardOnWin[]
+  win BoardOnWin[]
 
-  @@map("user_board")
+  @@map("board")
 }
 
-model UserBoardOnWin {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime? @map("updated_at")
-  Win         Win       @relation(fields: [winId], references: [id])
-  winId       Int       @map("win_id")
-  UserBoard   UserBoard @relation(fields: [userBoardId], references: [id])
-  userBoardId Int       @map("user_board_id")
+model BoardOnWin {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  Win       Win       @relation(fields: [winId], references: [id])
+  winId     Int       @map("win_id")
+  Board     Board     @relation(fields: [BoardId], references: [id])
+  BoardId   Int       @map("board_id")
 
-  @@map("user_board_and_win")
+  @@map("board_and_win")
 }
