@@ -2,6 +2,7 @@ import express from 'express';
 import upload from '../middleware/multer';
 import winController from '../controllers/winController';
 import validateToken from '../middleware/validateToken';
+import validateUser from '../middleware/validateUser';
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router.post(
   winController.uploadWin,
 );
 router.get('/', winController.getWinList);
-router.get('/:winId', winController.getWinDetail);
+router.get('/:winId', validateUser, winController.getWinDetail);
 router.put('/:winId', validateToken, winController.modifyWin);
 router.delete('/:winId', validateToken, winController.deleteWin);
 

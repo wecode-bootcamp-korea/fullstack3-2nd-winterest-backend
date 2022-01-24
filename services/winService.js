@@ -30,8 +30,8 @@ const getWinList = async (pageNumber, tagName) => {
 };
 
 // 게시물 상세 조회
-const getWinDetail = async winId => {
-  const winDetail = await winDao.getWinByWinId(winId);
+const getWinDetail = async (winId, userId) => {
+  const winDetail = await winDao.getWinByWinId(winId, userId);
 
   return winDetail;
 };
