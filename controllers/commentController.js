@@ -15,7 +15,7 @@ const uploadComment = async (req, res) => {
 // 댓글 조회
 const getComments = async (req, res) => {
   const { winId } = req.params;
-  const { userId } = req.query;
+  const userId = req.userId;
   const comments = await commentService.getComments(winId, null, userId);
 
   return res.status(200).json({ comments });
