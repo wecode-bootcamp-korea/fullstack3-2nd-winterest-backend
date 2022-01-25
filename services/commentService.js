@@ -62,15 +62,7 @@ const deleteComment = async (commentId, userId) => {
   const author = await commentDao.getUserIdBycommentId(commentId);
 
   if (author === userId) {
-    const comments = await commentDao.getCommentsByparentId(commentId);
-
-    await commentDao.deleteComment(commentId);
-
-    if (!comments) return true;
-
-    for (let comment of comments) {
-      deleteComment(comment.id, comment.userId);
-    }
+    return await commentDao.deleteComment(commentId);
   } else {
     const error = new Error('NO_PERMISSION');
 
@@ -78,8 +70,6 @@ const deleteComment = async (commentId, userId) => {
 
     throw error;
   }
-
-  return true;
 };
 
 export default { uploadComment, getComments, modifyComment, deleteComment };

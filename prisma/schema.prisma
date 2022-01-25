@@ -100,7 +100,7 @@ model WinLike {
 
 model Comment {
   id          Int       @id @default(autoincrement())
-  parent      Comment?  @relation("parent", fields: [parentId], references: [id])
+  parent      Comment?  @relation("parent", fields: [parentId], references: [id], onDelete: Cascade)
   predecessor Comment[] @relation("parent")
   parentId    Int?      @map("parent_id")
   content     String
