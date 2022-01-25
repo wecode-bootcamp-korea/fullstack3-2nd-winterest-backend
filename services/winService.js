@@ -108,10 +108,8 @@ const deleteWin = async (winId, userId) => {
 const saveWin = async (winId, boardId, userId) => {
   const isExist = await winDao.getBoardOnWin(winId, userId);
 
-  console.log(isExist);
-
   if (!isExist) {
-    await winDao.createBoardOnWin(winId, boardId);
+    await winDao.createWinOnBoard(winId, boardId);
 
     return true;
   } else {

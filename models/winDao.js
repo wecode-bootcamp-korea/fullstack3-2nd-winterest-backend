@@ -278,25 +278,6 @@ const getBoardOnWin = async (winId, userId) => {
   return !!isExist;
 };
 
-// 내 board에 win 저장
-const createBoardOnWin = async (winId, boardId) => {
-  await prisma.$queryRaw`
-    INSERT INTO
-      board_and_win
-      (
-        win_id,
-        board_id
-      )
-    VALUES
-    (
-      ${winId},
-      ${boardId}
-    )
-  `;
-
-  return true;
-};
-
 const getFollowByUserId = async (followerId, followingId) => {
   const [{ isFollowing }] = await prisma.$queryRaw`
     SELECT EXISTS
@@ -328,7 +309,6 @@ export default {
   deleteWinByWinId,
   getUserIdByWinId,
   createTag,
-  createBoardOnWin,
   getBoardOnWin,
   getFollowByUserId,
 };
