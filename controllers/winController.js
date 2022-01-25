@@ -2,11 +2,15 @@ import winService from '../services/winService';
 
 // 게시물 업로드
 const uploadWin = async (req, res) => {
+  const tagNames = req.body.tagNames;
+  const tagName = tagNames.replace(/ /g, '').split(',');
+
   const createdWinId = await winService.uploadWin(
     req.file.location,
     req.body.title ? req.body.title : null,
     req.body.desc ? req.body.desc : null,
     req.userId,
+    tagName,
   );
 
   return res.status(201).json({ createdWinId });

@@ -36,6 +36,38 @@ const createWin = async (imageUrl, title, desc, userId) => {
   return id;
 };
 
+// tag를 DB에 저장
+const createTag = async (tagName, createdWinId) => {
+  const tagNameIds = [];
+
+  for (let i = 0; i < tagName.length; i++) {
+    const [createTag] = await prisma.$queryRaw`
+    INSERT IGNORE INTO
+      tag (name)
+    VALUES
+      (${tagName[i]})
+    `;
+    const [tagNameId] = await prisma.$queryRaw`
+    SELECT 
+      id
+    FROM
+      tag
+    WHERE
+      name=${tagName[i]}
+    `;
+    tagNameIds.push(tagNameId.id);
+
+    const [tagAndWin] = await prisma.$queryRaw`
+    INSERT INTO
+      tag_and_win (tag_id, win_id)
+    VALUES
+      (${tagNameIds[i]}, ${createdWinId})
+    `;
+  }
+
+  return true;
+};
+
 // 게시물 조회 (10개씩)
 const readWin = async pageNumber => {
   const winList = await prisma.$queryRaw`
@@ -143,4 +175,5 @@ export default {
   getUrlByWinId,
   deleteWinByWinId,
   getUserIdByWinId,
+  createTag,
 };
