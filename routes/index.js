@@ -4,6 +4,7 @@ import winRouter from './winRouter';
 import commentRouter from './commentRouter';
 import commentLikeRouter from './commentLikeRouter';
 import followRouter from './followRouter';
+import boardRouter from './boardRouter';
 
 const router = express.Router();
 
@@ -12,5 +13,6 @@ router.use('/win', winRouter);
 router.use('/comment', commentRouter);
 router.use('/comment-like', commentLikeRouter);
 router.use('/follow', followRouter);
+router.use('/board', boardRouter);
 
 export default router;

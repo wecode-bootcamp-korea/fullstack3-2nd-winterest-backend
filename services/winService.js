@@ -33,6 +33,12 @@ const getWinList = async (pageNumber, tagName) => {
 const getWinDetail = async (winId, userId) => {
   const winDetail = await winDao.getWinByWinId(winId, userId);
 
+  if (winDetail.author === userId) {
+    winDetail.isAuthor = true;
+  } else {
+    winDetail.isAuthor = false;
+  }
+
   return winDetail;
 };
 
