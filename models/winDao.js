@@ -123,7 +123,7 @@ const searchTag = async (pageNumber, tagName) => {
 
 // 게시물 상세 조회
 const getWinByWinId = async winId => {
-  const winDetail = await prisma.$queryRaw`
+  const [winDetail] = await prisma.$queryRaw`
     SELECT
       id,
       title,
@@ -131,7 +131,7 @@ const getWinByWinId = async winId => {
       image_url AS imageUrl,
       created_at AS createdAt,
       updated_at AS updateAt,
-      user_id AS userId
+      user_id AS author
     FROM
       win
     WHERE
