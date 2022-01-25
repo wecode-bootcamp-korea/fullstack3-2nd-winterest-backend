@@ -90,6 +90,37 @@ const readWin = async pageNumber => {
   return winList;
 };
 
+// tag 게시물 조회 (10개씩)
+const searchTag = async (pageNumber, tagName) => {
+  const tagList = await prisma.$queryRaw`
+  SELECT
+    win.id,
+    win.title,
+    win.description,
+    win.image_url AS imageUrl,
+    win.created_at AS createdAt,
+    win.updated_at AS updatedAt,
+    win.user_id AS userId
+  FROM
+    win
+  INNER JOIN
+    tag_and_win
+  ON 
+    win.id = tag_and_win.win_id
+  INNER JOIN
+    tag
+  ON
+    tag.id = tag_and_win.tag_id
+  WHERE
+    tag.name = ${tagName}
+  ORDER BY
+    id  
+  DESC
+  LIMIT 10 OFFSET ${(pageNumber - 1) * 10}
+  `;
+  return tagList;
+};
+
 // 게시물 상세 조회
 const getWinByWinId = async winId => {
   const winDetail = await prisma.$queryRaw`
@@ -170,6 +201,7 @@ const getUserIdByWinId = async winId => {
 export default {
   createWin,
   readWin,
+  searchTag,
   getWinByWinId,
   updateWin,
   getUrlByWinId,

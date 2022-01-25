@@ -17,10 +17,16 @@ const uploadWin = async (url, title, desc, userId, tagName) => {
 };
 
 // 게시물 조회
-const getWinList = async pageNumber => {
-  const winList = await winDao.readWin(pageNumber);
+const getWinList = async (pageNumber, tagName) => {
+  if (!tagName) {
+    const winList = await winDao.readWin(pageNumber);
 
-  return winList;
+    return winList;
+  } else {
+    const tagList = await winDao.searchTag(pageNumber, tagName);
+
+    return tagList;
+  }
 };
 
 // 게시물 상세 조회
@@ -77,4 +83,10 @@ const deleteWin = async (winId, userId) => {
   }
 };
 
-export default { uploadWin, getWinList, getWinDetail, modifyWin, deleteWin };
+export default {
+  uploadWin,
+  getWinList,
+  getWinDetail,
+  modifyWin,
+  deleteWin,
+};

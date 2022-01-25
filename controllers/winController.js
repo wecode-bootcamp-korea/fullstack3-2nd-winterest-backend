@@ -16,10 +16,14 @@ const uploadWin = async (req, res) => {
   return res.status(201).json({ createdWinId });
 };
 
-// 전체 게시물 조회
+// 전체 게시물 및 tag 게시물 조회
 const getWinList = async (req, res) => {
-  const { pageNumber } = req.query;
-  const winList = await winService.getWinList(pageNumber);
+  const { pagenumber: pageNumber, tagname: tagName } = req.query;
+
+  const winList = await winService.getWinList(
+    pageNumber,
+    tagName === 'undefined' ? undefined : tagName,
+  );
 
   return res.status(200).json({ winList });
 };
@@ -64,4 +68,10 @@ const deleteWin = async (req, res) => {
   }
 };
 
-export default { uploadWin, getWinList, getWinDetail, modifyWin, deleteWin };
+export default {
+  uploadWin,
+  getWinList,
+  getWinDetail,
+  modifyWin,
+  deleteWin,
+};
