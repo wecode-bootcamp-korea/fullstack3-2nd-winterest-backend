@@ -29,16 +29,21 @@ const createComment = async (parentId, content, userId, winId) => {
 const getCommentsByWinAndParentId = async (winId, parentId) => {
   const comments = await prisma.$queryRaw`
     SELECT
-      id,
+      comment.id,
       parent_id AS parentId,
       content,
       like_count AS likeCount,
-      created_at AS createdAt,
-      updated_at AS updatedAt,
-      user_id AS userId,
-      win_id AS winId
+      comment.created_at AS createdAt,
+      comment.updated_at AS updatedAt,
+      user_id AS authorId,
+      win_id AS winId,
+      name AS author
     FROM
       comment
+    JOIN
+      user
+    ON
+      user.id=comment.user_id
     WHERE
       CASE WHEN ${parentId} is null THEN parent_id is null
       ELSE parent_id=${parentId}
@@ -67,6 +72,24 @@ const getCommentLikeByCommentIdAndUserId = async (commentId, userId) => {
   `;
 
   return !!isExist;
+};
+
+// 3. parent id로 user name 조회
+const getUserNameByParentId = async parentId => {
+  const [parentAuthor] = await prisma.$queryRaw`
+    SELECT
+      user.name AS parentAuthor
+    FROM
+      user
+    JOIN
+      comment
+    ON
+      user.id=comment.user_id
+    WHERE
+      comment.id=${parentId}
+  `;
+
+  return parentAuthor;
 };
 
 // 댓글 수정
@@ -129,6 +152,7 @@ export default {
   createComment,
   getCommentsByWinAndParentId,
   getCommentLikeByCommentIdAndUserId,
+  getUserNameByParentId,
   updateComment,
   getUserIdBycommentId,
   deleteComment,

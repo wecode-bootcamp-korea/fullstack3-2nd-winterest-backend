@@ -3,9 +3,7 @@ import commentDao from '../models/commentDao';
 
 // 댓글 작성
 const uploadComment = async (parentId, content, userId, winId) => {
-  await commentDao.createComment(parentId, content, userId, winId);
-
-  return true;
+  return await commentDao.createComment(parentId, content, userId, winId);
 };
 
 // 댓글 조회
@@ -22,6 +20,17 @@ const getComments = async (winId, parentId, userId) => {
       comment.id,
       userId,
     );
+
+    const parentAuthor = await commentDao.getUserNameByParentId(
+      comment.parentId,
+    );
+
+    if (parentAuthor) {
+      comment.parentAuthor = parentAuthor.parentAuthor;
+    } else {
+      comment.parentAuthor = null;
+    }
+
     comment.comments = await getComments(winId, comment.id, userId);
   }
 
@@ -38,7 +47,7 @@ const modifyComment = async (commentId, content, userId) => {
   const author = await commentDao.getUserIdBycommentId(commentId);
 
   if (userId === author) {
-    await commentDao.updateComment(commentId, content, curDateKorea);
+    return await commentDao.updateComment(commentId, content, curDateKorea);
   } else {
     const error = new Error('NO_PERMISSION');
 
@@ -46,8 +55,6 @@ const modifyComment = async (commentId, content, userId) => {
 
     throw error;
   }
-
-  return true;
 };
 
 // 댓글 삭제
@@ -56,6 +63,7 @@ const deleteComment = async (commentId, userId) => {
 
   if (author === userId) {
     const comments = await commentDao.getCommentsByparentId(commentId);
+
     await commentDao.deleteComment(commentId);
 
     if (!comments) return true;
