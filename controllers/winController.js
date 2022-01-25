@@ -31,7 +31,8 @@ const getWinList = async (req, res) => {
 // 게시물 상세 조회
 const getWinDetail = async (req, res) => {
   const winId = req.params.winId;
-  const winDetail = await winService.getWinDetail(winId);
+  const userId = req.userId;
+  const winDetail = await winService.getWinDetail(winId, userId);
 
   return res.status(200).json({ winDetail });
 };
