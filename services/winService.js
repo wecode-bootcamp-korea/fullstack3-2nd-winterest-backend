@@ -7,11 +7,11 @@ aws.config.loadFromPath(path.join(__dirname, '..', '/awsconfig.json'));
 const s3 = new aws.S3();
 
 // 게시물 업로드
-const uploadWin = async (url, title, desc, userId, tagName) => {
+const uploadWin = async (url, title, desc, boardId, userId, tagName) => {
   const createdWinId = await winDao.createWin(url, title, desc, userId);
 
-  // tag 추가
-  const createTag = await winDao.createTag(tagName, createdWinId);
+  await winDao.createTag(tagName, createdWinId); // tag 추가
+  await winDao.createWinOnBoard(createdWinId, boardId);
 
   return createdWinId;
 };
@@ -31,7 +31,21 @@ const getWinList = async (pageNumber, tagName) => {
 
 // 게시물 상세 조회
 const getWinDetail = async (winId, userId) => {
-  const winDetail = await winDao.getWinByWinId(winId, userId);
+  const winDetail = await winDao.getWinByWinId(winId);
+  const authorId = winDetail.authorId;
+  const isFollowing = await winDao.getFollowByUserId(userId, authorId);
+
+  if (authorId === userId) {
+    winDetail.isAuthor = true;
+  } else {
+    winDetail.isAuthor = false;
+  }
+
+  if (isFollowing) {
+    winDetail.isFollowing = true;
+  } else {
+    winDetail.isFollowing = false;
+  }
 
   if (winDetail.author === userId) {
     winDetail.isAuthor = true;
@@ -43,18 +57,17 @@ const getWinDetail = async (winId, userId) => {
 };
 
 // 게시물 수정
-const modifyWin = async (winId, title, desc, userId) => {
-  const curDate = new Date();
-  const utc = curDate.getTime() + curDate.getTimezoneOffset() * 60 * 1000;
-  const timeDiff = 18 * 60 * 60 * 1000;
-  const curDateKorea = new Date(utc + timeDiff);
-
+const modifyWin = async (winId, title, desc, boardId, userId) => {
   const author = await winDao.getUserIdByWinId(winId);
 
   if (author === userId) {
-    await winDao.updateWin(winId, title, desc, curDateKorea);
+    const curDate = new Date();
+    const utc = curDate.getTime() + curDate.getTimezoneOffset() * 60 * 1000;
+    const timeDiff = 18 * 60 * 60 * 1000;
+    const curDateKorea = new Date(utc + timeDiff);
 
-    return true;
+    await winDao.updateWin(winId, title, desc, curDateKorea);
+    await winDao.updateBoardOnWin(winId, boardId);
   } else {
     const error = new Error('NO_PERMISSION');
 
@@ -62,6 +75,8 @@ const modifyWin = async (winId, title, desc, userId) => {
 
     throw error;
   }
+
+  return true;
 };
 
 // 게시물 삭제
@@ -89,10 +104,37 @@ const deleteWin = async (winId, userId) => {
   }
 };
 
+// win 저장
+const saveWin = async (winId, boardId, userId) => {
+  const isExist = await winDao.getBoardOnWin(winId, userId);
+
+  console.log(isExist);
+
+  if (!isExist) {
+    await winDao.createBoardOnWin(winId, boardId);
+
+    return true;
+  } else {
+    const error = new Error('ALREADY_SAVED');
+
+    error.statusCode = 400;
+
+    throw error;
+  }
+};
+
+const modifySavedWin = async (winId, boardId) => {
+  await winDao.updateBoardOnWin(winId, boardId);
+
+  return true;
+};
+
 export default {
   uploadWin,
   getWinList,
   getWinDetail,
   modifyWin,
   deleteWin,
+  saveWin,
+  modifySavedWin,
 };

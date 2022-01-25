@@ -29,15 +29,16 @@ model Win {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  email      String?
-  password   String?
-  name       String
-  snsId      String?   @map("sns_id")
-  connetedAt DateTime? @map("connected_at")
-  verifiedAt DateTime? @map("verified_at")
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime? @map("updated_at")
+  id            Int       @id @default(autoincrement())
+  email         String?
+  password      String?
+  name          String
+  snsId         String?   @map("sns_id")
+  followerCount Int       @default(0) @map("follower_count")
+  connetedAt    DateTime? @map("connected_at")
+  verifiedAt    DateTime? @map("verified_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime? @map("updated_at")
 
   win         Win[]
   interest    Interest[]
