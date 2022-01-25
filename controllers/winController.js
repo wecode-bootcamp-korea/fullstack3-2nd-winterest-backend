@@ -5,21 +5,21 @@ const uploadWin = async (req, res) => {
   const tagNames = req.body.tagNames;
   const tagName = tagNames.replace(/ /g, '').split(',');
 
-  const createdWinId = await winService.uploadWin(
+  await winService.uploadWin(
     req.file.location,
     req.body.title ? req.body.title : null,
     req.body.desc ? req.body.desc : null,
+    req.body.boardId,
     req.userId,
     tagName,
   );
 
-  return res.status(201).json({ createdWinId });
+  return res.status(201).json({ message: 'CREATE_SUCCESS' });
 };
 
 // 전체 게시물 및 tag 게시물 조회
 const getWinList = async (req, res) => {
   const { pagenumber: pageNumber, tagname: tagName } = req.query;
-
   const winList = await winService.getWinList(
     pageNumber,
     tagName === 'undefined' ? undefined : tagName,
@@ -41,9 +41,10 @@ const getWinDetail = async (req, res) => {
 const modifyWin = async (req, res) => {
   try {
     const winId = req.params.winId;
-    const { title, desc } = req.body;
+    const { title, desc, boardId } = req.body;
     const userId = req.userId;
-    await winService.modifyWin(winId, title, desc, userId);
+
+    await winService.modifyWin(winId, title, desc, boardId, userId);
 
     return res.status(200).json({ message: 'MODIFY_SUCCESS' });
   } catch (err) {
@@ -69,10 +70,36 @@ const deleteWin = async (req, res) => {
   }
 };
 
+// win 저장
+const saveWin = async (req, res) => {
+  try {
+    const { winId, boardId } = req.body;
+    const userId = req.userId;
+
+    await winService.saveWin(winId, boardId, userId);
+
+    return res.status(201).json({ message: 'SAVE_SUCCESS' });
+  } catch (err) {
+    console.log(err);
+
+    return res.status(err.statusCode).json({ message: err.message });
+  }
+};
+
+const modifySavedWin = async (req, res) => {
+  const { winId, boardId } = req.body;
+
+  await winService.modifySavedWin(winId, boardId);
+
+  return res.status(200).json({ message: 'MODIFY_SUCCESS' });
+};
+
 export default {
   uploadWin,
   getWinList,
   getWinDetail,
   modifyWin,
   deleteWin,
+  saveWin,
+  modifySavedWin,
 };

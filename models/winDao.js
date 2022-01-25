@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
-// 게시물 생성
+// 게시물 업로드
+// 1. 게시물 생성
 const createWin = async (imageUrl, title, desc, userId) => {
   await prisma.$queryRaw`
     INSERT INTO
@@ -68,6 +69,23 @@ const createTag = async (tagName, createdWinId) => {
   return true;
 };
 
+// 2. 게시물을 board에 등록
+const createWinOnBoard = async (winId, boardId) => {
+  await prisma.$queryRaw`
+    INSERT INTO
+      board_and_win
+      (
+        win_id,
+        board_id
+      )
+    VALUES
+    (
+      ${winId},
+      ${boardId}
+    )
+  `;
+};
+
 // 게시물 조회 (10개씩)
 const readWin = async pageNumber => {
   const winList = await prisma.$queryRaw`
@@ -125,15 +143,21 @@ const searchTag = async (pageNumber, tagName) => {
 const getWinByWinId = async winId => {
   const [winDetail] = await prisma.$queryRaw`
     SELECT
-      id,
+      win.id,
       title,
       description,
       image_url AS imageUrl,
-      created_at AS createdAt,
-      updated_at AS updateAt,
-      user_id AS author
+      win.created_at AS createdAt,
+      win.updated_at AS updateAt,
+      user_id AS authorId,
+      user.name AS author,
+      user.follower_count AS followerCount
     FROM
       win
+    JOIN
+      user
+    ON
+      win.user_id=user.id
     WHERE
       win.id=${winId}
   `;
@@ -142,6 +166,7 @@ const getWinByWinId = async winId => {
 };
 
 // 게시물 수정
+// 1. 게시물 수정(board 빼고)
 const updateWin = async (winId, title, desc, date) => {
   await prisma.$queryRaw`
     UPDATE
@@ -149,9 +174,37 @@ const updateWin = async (winId, title, desc, date) => {
     SET
       title=${title},
       description=${desc},
-      created_at=${date}
+      updated_at=${date}
     WHERE
       win.id=${winId}
+  `;
+
+  return true;
+};
+
+// 2. 게시물의 board id 조회
+const getBoardIdByWinId = async winId => {
+  const boardId = await prisma.$queryRaw`
+    SELECT
+      board_id
+    FROM
+      board_and_win
+    WHERE
+      win_id=${winId}
+  `;
+
+  return boardId;
+};
+
+// 3. 게시물의 board id 수정
+const updateBoardOnWin = async (winId, boardId) => {
+  await prisma.$queryRaw`
+    UPDATE
+      board_and_win
+    SET
+      board_id=${boardId}
+    WHERE
+      win_id=${winId}
   `;
 
   return true;
@@ -198,14 +251,84 @@ const getUserIdByWinId = async winId => {
   return userId;
 };
 
+// 저장된 win인지 확인
+const getBoardOnWin = async (winId, userId) => {
+  const [{ isExist }] = await prisma.$queryRaw`
+    SELECT EXISTS
+    (
+      SELECT
+        *
+      FROM
+        user
+      JOIN
+        board
+      ON
+        user.id=board.user_id
+      JOIN
+        board_and_win
+      ON
+        board.id=board_and_win.board_id
+      WHERE
+        user.id=${userId}
+      AND
+        board_and_win.win_id=${winId}
+    ) AS isExist
+  `;
+
+  return !!isExist;
+};
+
+// 내 board에 win 저장
+const createBoardOnWin = async (winId, boardId) => {
+  await prisma.$queryRaw`
+    INSERT INTO
+      board_and_win
+      (
+        win_id,
+        board_id
+      )
+    VALUES
+    (
+      ${winId},
+      ${boardId}
+    )
+  `;
+
+  return true;
+};
+
+const getFollowByUserId = async (followerId, followingId) => {
+  const [{ isFollowing }] = await prisma.$queryRaw`
+    SELECT EXISTS
+    (
+      SELECT
+        *
+      FROM
+        follow
+      WHERE
+        follower_id=${followerId}
+      AND
+        following_id=${followingId}
+    ) AS isFollowing
+  `;
+
+  return !!isFollowing;
+};
+
 export default {
   createWin,
+  createWinOnBoard,
   readWin,
   searchTag,
   getWinByWinId,
+  updateBoardOnWin,
   updateWin,
+  getBoardIdByWinId,
   getUrlByWinId,
   deleteWinByWinId,
   getUserIdByWinId,
   createTag,
+  createBoardOnWin,
+  getBoardOnWin,
+  getFollowByUserId,
 };
