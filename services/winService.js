@@ -34,24 +34,11 @@ const getWinDetail = async (winId, userId) => {
   const winDetail = await winDao.getWinByWinId(winId);
   const authorId = winDetail.authorId;
   const isFollowing = await winDao.getFollowByUserId(userId, authorId);
+  const isSaved = await winDao.getBoardAndWinByWinIdAndUserId(winId, userId);
 
-  if (authorId === userId) {
-    winDetail.isAuthor = true;
-  } else {
-    winDetail.isAuthor = false;
-  }
-
-  if (isFollowing) {
-    winDetail.isFollowing = true;
-  } else {
-    winDetail.isFollowing = false;
-  }
-
-  if (winDetail.author === userId) {
-    winDetail.isAuthor = true;
-  } else {
-    winDetail.isAuthor = false;
-  }
+  winDetail.isAuthor = authorId === userId;
+  winDetail.isFollowing = isFollowing;
+  winDetail.isSaved = isSaved;
 
   return winDetail;
 };
