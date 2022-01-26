@@ -175,27 +175,46 @@ const getWinByWinId = async winId => {
   return winDetail;
 };
 
-// 저장된 게시물인지 조회
-const getBoardAndWinByWinIdAndUserId = async (winId, userId) => {
-  const [{ isSaved }] = await prisma.$queryRaw`
-    SELECT EXISTS
-    (
-      SELECT
-        *
-      FROM
-        board_and_win
-      JOIN
-        board
-      ON
-        board_and_win.board_id=board.id
-      WHERE
-        board_and_win.win_id=${winId}
-      AND
-        board.user_id=${userId}
-    ) AS isSaved
+// 게시물의 tag 조회
+const getTagByWinId = async winId => {
+  const tags = await prisma.$queryRaw`
+    SELECT
+      tag.name
+    FROM
+      win
+    JOIN
+      tag_and_win
+    ON
+      win.id=tag_and_win.win_id
+    JOIN
+      tag
+    ON
+      tag_and_win.tag_id=tag.id
+    WHERE
+      win.id=${winId}
   `;
 
-  return !!isSaved;
+  return tags;
+};
+
+// 저장된 게시물인지 조회
+const getBoardAndWinByWinIdAndUserId = async (winId, userId) => {
+  const isSaved = await prisma.$queryRaw`
+    SELECT
+      board.name
+    FROM
+      board_and_win
+    JOIN
+      board
+    ON
+      board_and_win.board_id=board.id
+    WHERE
+      board_and_win.win_id=${winId}
+    AND
+      board.user_id=${userId}
+  `;
+
+  return isSaved;
 };
 
 // 게시물 수정
@@ -336,6 +355,7 @@ export default {
   searchTag,
   getWinByWinId,
   updateBoardOnWin,
+  getTagByWinId,
   getBoardAndWinByWinIdAndUserId,
   updateWin,
   getBoardIdByWinId,
