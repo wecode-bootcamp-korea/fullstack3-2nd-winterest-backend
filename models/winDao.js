@@ -90,15 +90,20 @@ const createWinOnBoard = async (winId, boardId) => {
 const readWin = async pageNumber => {
   const winList = await prisma.$queryRaw`
     SELECT
-      id,
-      title,
-      description,
-      image_url AS imageUrl,
-      created_at AS createdAt,
-      updated_at AS updatedAt,
-      user_id AS userId
+      win.id,
+      win.title,
+      win.description,
+      win.image_url AS imageUrl,
+      win.created_at AS createdAt,
+      win.updated_at AS updatedAt,
+      win.user_id AS userId,
+      user.name AS userName
     FROM
       win
+    INNER JOIN
+      user
+    ON
+      user.id = win.user_id 
     ORDER BY
       id
     DESC
@@ -118,7 +123,8 @@ const searchTag = async (pageNumber, tagName) => {
     win.image_url AS imageUrl,
     win.created_at AS createdAt,
     win.updated_at AS updatedAt,
-    win.user_id AS userId
+    win.user_id AS userId,
+    user.name AS userName
   FROM
     win
   INNER JOIN
@@ -129,6 +135,10 @@ const searchTag = async (pageNumber, tagName) => {
     tag
   ON
     tag.id = tag_and_win.tag_id
+  INNER JOIN
+    user
+  ON
+    user.id = win.user_id 
   WHERE
     tag.name = ${tagName}
   ORDER BY
