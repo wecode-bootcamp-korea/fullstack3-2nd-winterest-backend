@@ -28,10 +28,13 @@ const getBoardList = async userId => {
 };
 
 // 유저 board의 win 목록 조회
-const getBoardDetail = async boardId => {
-  const wins = await boardDao.getWinByBoardId(boardId);
+const getBoardDetail = async (boardId, pageNumber) => {
+  const boardName = await boardDao.getboardNameByBoardId(boardId);
+  const wins = await boardDao.getWinByBoardId(boardId, pageNumber);
 
-  return wins;
+  boardName.wins = wins;
+
+  return boardName;
 };
 
 // board 이름 수정

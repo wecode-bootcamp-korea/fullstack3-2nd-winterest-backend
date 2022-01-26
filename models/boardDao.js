@@ -55,8 +55,22 @@ const getBoardListByUserId = async userId => {
   return boardLIst;
 };
 
+// boardId로 boardName 조회
+const getboardNameByBoardId = async boardId => {
+  const [boardName] = await prisma.$queryRaw`
+    SELECT
+      board.name
+    FROM
+      board
+    WHERE
+      board.id=${boardId}
+  `;
+
+  return boardName;
+};
+
 // boardId로 win 조회
-const getWinByBoardId = async boardId => {
+const getWinByBoardId = async (boardId, pageNumber) => {
   const wins = await prisma.$queryRaw`
     SELECT
       win.id,
@@ -74,6 +88,10 @@ const getWinByBoardId = async boardId => {
       win.id=board_and_win.win_id
     WHERE
       board_id=${boardId}
+    ORDER BY
+      id
+    DESC
+    LIMIT 10 OFFSET ${(pageNumber - 1) * 10} 
   `;
 
   return wins;
@@ -124,6 +142,7 @@ export default {
   getBoardByBoardNameAndUserId,
   getBoardListByUserId,
   createBoard,
+  getboardNameByBoardId,
   getWinByBoardId,
   updateBoard,
   getUserIdByBoardId,

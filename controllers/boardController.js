@@ -26,8 +26,9 @@ const getBoardList = async (req, res) => {
 
 // 유저의 board 안의 win 조회
 const getBoardDetail = async (req, res) => {
+  const { pagenumber: pageNumber } = req.query;
   const { boardId } = req.params;
-  const boardDetail = await boardService.getBoardDetail(boardId);
+  const boardDetail = await boardService.getBoardDetail(boardId, pageNumber);
 
   return res.status(200).json({ boardDetail });
 };
