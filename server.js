@@ -18,10 +18,6 @@ app.use(express.json());
 //Routing
 app.use(routes);
 
-app.use('/ping', (req, res) => {
-  return res.status(200).json({ message: 'pong' });
-});
-
 // Create a server
 const server = http.createServer(app);
 
