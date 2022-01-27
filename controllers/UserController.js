@@ -56,6 +56,7 @@ const signInKakao = async (req, res) => {
       .status(201)
       .json({ message: 'LOGIN_SUCCESS', accessToken: accessTokenWinterest });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ message: err.message });
   }
 };

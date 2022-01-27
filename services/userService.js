@@ -67,9 +67,12 @@ const signInKakao = async accessToken => {
 
   // 등록되지 않은 사용자라면 winterest 서버에 등록
   if (!userCheck) {
+    const userNumber = Math.floor(Math.random() * 1000).toString() + Date.now();
+
     const createUser = await userDao.createUserBySNSId(
       user.data.id,
       user.data.properties.nickname,
+      userNumber,
     );
 
     await userDao.createBoard(createUser.id);
