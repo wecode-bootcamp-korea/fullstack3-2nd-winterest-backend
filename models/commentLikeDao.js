@@ -37,7 +37,7 @@ const createLike = async (commentId, userId) => {
   `;
 
   // comment 테이블에서 like_count 증가
-  await prisma.$queryRaw`
+  return await prisma.$queryRaw`
     UPDATE
       comment
     SET
@@ -45,8 +45,6 @@ const createLike = async (commentId, userId) => {
     WHERE
       comment.id=${commentId}
 `;
-
-  return true;
 };
 
 const deleteLike = async (commentId, userId) => {
@@ -61,7 +59,7 @@ const deleteLike = async (commentId, userId) => {
   `;
 
   // comment 테이블에서 like_count 감소
-  await prisma.$queryRaw`
+  return await prisma.$queryRaw`
     UPDATE
       comment
     SET
@@ -69,8 +67,6 @@ const deleteLike = async (commentId, userId) => {
     WHERE
       comment.id=${commentId}
   `;
-
-  return true;
 };
 
 export default {

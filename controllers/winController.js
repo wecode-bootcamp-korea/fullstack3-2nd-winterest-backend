@@ -2,19 +2,28 @@ import winService from '../services/winService';
 
 // 게시물 업로드
 const uploadWin = async (req, res) => {
-  const tagNames = req.body.tagNames;
-  const tagName = tagNames.replace(/ /g, '').split(',');
+  if (req.file && req.body.boardId && req.body.tagNames) {
+    const fileLocation = req.file.location;
+    const title = req.body.title ? req.body.title : null;
+    const desc = req.body.desc ? req.body.desc : null;
+    const { boardId } = req.body;
+    const userId = req.userId;
+    const tagNames = req.body.tagNames;
+    const tagName = tagNames.replace(/ /g, '').split(',');
 
-  await winService.uploadWin(
-    req.file.location,
-    req.body.title ? req.body.title : null,
-    req.body.desc ? req.body.desc : null,
-    req.body.boardId,
-    req.userId,
-    tagName,
-  );
+    await winService.uploadWin(
+      fileLocation,
+      title,
+      desc,
+      boardId,
+      userId,
+      tagName,
+    );
 
-  return res.status(201).json({ message: 'CREATE_SUCCESS' });
+    return res.status(201).json({ message: 'CREATE_SUCCESS' });
+  } else {
+    return res.status(400).json({ message: 'KEY_ERROR' });
+  }
 };
 
 // 전체 게시물 및 tag 게시물 조회
