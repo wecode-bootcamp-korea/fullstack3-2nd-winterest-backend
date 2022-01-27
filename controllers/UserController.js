@@ -9,6 +9,7 @@ const signUp = async (req, res) => {
         return res.status(409).json({ message: 'KEY_ERROR' });
       }
     }
+
     await userService.signUp(email, password, name);
 
     const accessToken = await userService.signIn(email, password); // userService에 별도의 함수를 만들것. signup시의 token 확보용
@@ -59,4 +60,12 @@ const signInKakao = async (req, res) => {
   }
 };
 
-export default { signUp, signIn, signInKakao };
+const getUserInfo = async (req, res) => {
+  const userId = req.userId;
+  const { userNumber } = req.params;
+  const userInfo = await userService.getUserInfo(userId, userNumber);
+
+  return res.status(200).json({ userInfo });
+};
+
+export default { signUp, signIn, signInKakao, getUserInfo };
