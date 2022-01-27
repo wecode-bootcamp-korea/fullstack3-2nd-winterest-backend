@@ -17,12 +17,12 @@ const getUserByEmail = async email => {
   return user;
 };
 
-const createUser = async (email, hashedPassword, name) => {
+const createUser = async (email, hashedPassword, name, userNumber) => {
   const createUser = await prisma.$queryRaw`
       INSERT INTO
-        user (email, password, name)
+        user (email, password, name, user_number)
       VALUES
-        (${email}, ${hashedPassword}, ${name})`;
+        (${email}, ${hashedPassword}, ${name}, ${userNumber})`;
 
   return createUser;
 };
@@ -74,10 +74,27 @@ const createBoard = async userId => {
   `;
 };
 
+const getUserByUserNumber = async userNumber => {
+  const [userInfo] = await prisma.$queryRaw`
+    SELECT
+      user.id,
+      user.name,
+      follower_count AS followerCount,
+      email
+    FROM
+      user
+    WHERE
+      user.user_number = ${userNumber}
+  `;
+
+  return userInfo;
+};
+
 export default {
   getUserByEmail,
   createUser,
   getUserBySNSId,
   createUserBySNSId,
   createBoard,
+  getUserByUserNumber,
 };

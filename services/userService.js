@@ -8,6 +8,7 @@ const { SECRET } = process.env;
 
 const signUp = async (email, password, name) => {
   const user = await userDao.getUserByEmail(email);
+  const userNumber = Math.floor(Math.random() * 1000).toString() + Date.now();
 
   if (user) {
     const error = new Error('EXISTED_USER');
@@ -18,7 +19,7 @@ const signUp = async (email, password, name) => {
 
   const hashedPassword = bcrypt.hashSync(password, 10);
 
-  return await userDao.createUser(email, hashedPassword, name);
+  return await userDao.createUser(email, hashedPassword, name, userNumber);
 };
 
 const signIn = async (email, password) => {
@@ -81,4 +82,12 @@ const signInKakao = async accessToken => {
   return accessTokenWinterest;
 };
 
-export default { signUp, signIn, signInKakao };
+const getUserInfo = async (userId, userNumber) => {
+  const userInfo = await userDao.getUserByUserNumber(userNumber);
+
+  userInfo.isMine = userInfo.id === userId;
+
+  return userInfo;
+};
+
+export default { signUp, signIn, signInKakao, getUserInfo };

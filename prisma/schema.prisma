@@ -17,7 +17,7 @@ model Win {
   imageUrl    String    @map("image_url") @db.VarChar(3000)
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime? @map("updated_at")
-  User        User      @relation(fields: [userId], references: [id])
+  User        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int       @map("user_id")
 
   tag     TagOnWin[]
@@ -30,12 +30,13 @@ model Win {
 
 model User {
   id            Int       @id @default(autoincrement())
+  userNumber    String    @unique @map("user_number")
   email         String?
   password      String?
   name          String
   snsId         String?   @map("sns_id")
   followerCount Int       @default(0) @map("follower_count")
-  connetedAt    DateTime? @map("connected_at")
+  connectedAt   DateTime? @map("connected_at")
   verifiedAt    DateTime? @map("verified_at")
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime? @map("updated_at")
@@ -107,7 +108,7 @@ model Comment {
   likeCount   Int       @default(0) @map("like_count")
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime? @map("updated_at")
-  User        User      @relation(fields: [userId], references: [id])
+  User        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int       @map("user_id")
   Win         Win       @relation(fields: [winId], references: [id], onDelete: Cascade)
   winId       Int       @map("win_id")
@@ -144,7 +145,7 @@ model Board {
   name      String
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @map("updated_at")
-  User      User      @relation(fields: [userId], references: [id])
+  User      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int       @map("user_id")
 
   win BoardOnWin[]
@@ -158,7 +159,7 @@ model BoardOnWin {
   updatedAt DateTime? @map("updated_at")
   Win       Win       @relation(fields: [winId], references: [id], onDelete: Cascade)
   winId     Int       @map("win_id")
-  Board     Board     @relation(fields: [BoardId], references: [id])
+  Board     Board     @relation(fields: [BoardId], references: [id], onDelete: Cascade)
   BoardId   Int       @map("board_id")
 
   @@map("board_and_win")
