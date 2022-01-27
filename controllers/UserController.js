@@ -1,3 +1,4 @@
+import { prisma } from '@prisma/client';
 import userService from '../services/userService';
 
 const signUp = async (req, res) => {
@@ -69,4 +70,27 @@ const getUserInfo = async (req, res) => {
   return res.status(200).json({ userInfo });
 };
 
-export default { signUp, signIn, signInKakao, getUserInfo };
+const getBoardList = async (req, res) => {
+  const { userNumber } = req.body;
+
+  const boardList = await userService.getBoardList(userNumber);
+
+  return res.status(200).json({ boardList });
+};
+
+const getUserNumber = async (req, res) => {
+  const userId = req.userId;
+
+  const userNumber = await userService.getUserNumber(userId);
+
+  return res.status(200).json({ userNumber });
+};
+
+export default {
+  signUp,
+  signIn,
+  signInKakao,
+  getUserInfo,
+  getBoardList,
+  getUserNumber,
+};
