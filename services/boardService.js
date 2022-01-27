@@ -32,7 +32,7 @@ const getBoardDetail = async (boardId, pageNumber) => {
   const boardName = await boardDao.getboardNameByBoardId(boardId);
   const wins = await boardDao.getWinByBoardId(boardId, pageNumber);
 
-  boardName.wins = wins;
+  if (wins.length !== 0) boardName.wins = wins;
 
   return boardName;
 };
