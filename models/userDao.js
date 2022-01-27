@@ -27,7 +27,7 @@ const createUser = async (email, hashedPassword, name, userNumber) => {
   return createUser;
 };
 
-const getUserBySNSId = async id => {
+const getUserBySNSId = async snsId => {
   const [user] = await prisma.$queryRaw`
   SELECT
     user.id,
@@ -35,17 +35,17 @@ const getUserBySNSId = async id => {
   FROM
     user
   WHERE
-    sns_id=${id}`;
+    sns_id=${snsId}`;
 
   return user;
 };
 
-const createUserBySNSId = async (snsId, nickName) => {
+const createUserBySNSId = async (snsId, nickName, userNumber) => {
   await prisma.$queryRaw`
       INSERT INTO
-        user (sns_id, name)
+        user (sns_id, name, user_number)
       VALUES
-        (${snsId}, ${nickName})
+        (${snsId}, ${nickName}, ${userNumber})
       `;
 
   const [userId] = await prisma.$queryRaw`
