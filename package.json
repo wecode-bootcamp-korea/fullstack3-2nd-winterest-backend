@@ -20,6 +20,7 @@
   "dependencies": {
     "@prisma/client": "^3.8.1",
     "aws-sdk": "^2.1061.0",
+    "axios": "^0.25.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^13.0.1",
