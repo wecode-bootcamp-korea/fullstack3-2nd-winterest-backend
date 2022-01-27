@@ -15,6 +15,7 @@ model Win {
   title       String?
   description String?
   imageUrl    String    @map("image_url") @db.VarChar(3000)
+  likeCount   Int       @default(0) @map("like_count")
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime? @map("updated_at")
   User        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
