@@ -80,10 +80,16 @@ const getBoardList = async (req, res) => {
 
 const getUserNumber = async (req, res) => {
   const userId = req.userId;
-
   const userNumber = await userService.getUserNumber(userId);
 
   return res.status(200).json({ userNumber });
+};
+
+const getUserName = async (req, res) => {
+  const userId = req.userId;
+  const userName = await userService.getUserName(userId);
+
+  return res.status(200).json({ userName });
 };
 
 export default {
@@ -93,4 +99,5 @@ export default {
   getUserInfo,
   getBoardList,
   getUserNumber,
+  getUserName,
 };

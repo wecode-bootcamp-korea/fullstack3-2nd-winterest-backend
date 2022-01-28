@@ -4,7 +4,6 @@ const likeWin = async (req, res) => {
   try {
     const { winId } = req.body;
     const userId = req.userId;
-
     const likeWinQuantity = await winLikeService.likeWin(winId, userId);
 
     return res.status(201).json({ message: 'SUCCESS', likeWinQuantity });
