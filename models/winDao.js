@@ -125,7 +125,8 @@ const readWin = async pageNumber => {
       win.updated_at AS updatedAt,
       win.user_id AS userId,
       user.name AS userName,
-      user.user_number AS userNumber
+      user.user_number AS userNumber,
+      win.like_count AS likeCount
     FROM
       win
     INNER JOIN
@@ -153,7 +154,8 @@ const searchTag = async (pageNumber, tagName) => {
     win.updated_at AS updatedAt,
     win.user_id AS userId,
     user.name AS userName,
-    user.user_number AS userNumber
+    user.user_number AS userNumber,
+    win.like_count AS likeCount
   FROM
     win
   INNER JOIN
