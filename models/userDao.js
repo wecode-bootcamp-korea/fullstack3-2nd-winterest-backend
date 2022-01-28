@@ -139,6 +139,19 @@ const getUserNumberByUserId = async userId => {
   return userNumber;
 };
 
+const getUserNameByUserId = async userId => {
+  const [{ userName }] = await prisma.$queryRaw`
+    SELECT
+      user.name AS userName
+    FROM
+      user
+    WHERE
+      user.id = ${userId}
+  `;
+
+  return userName;
+};
+
 export default {
   getUserByEmail,
   createUser,
@@ -149,4 +162,5 @@ export default {
   getBoardByUserNumber,
   getFollowByUserId,
   getUserNumberByUserId,
+  getUserNameByUserId,
 };

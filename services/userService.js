@@ -106,6 +106,12 @@ const getUserNumber = async userId => {
   return userNumber;
 };
 
+const getUserName = async userId => {
+  const userName = await userDao.getUserNameByUserId(userId);
+
+  return userName;
+};
+
 export default {
   signUp,
   signIn,
@@ -113,4 +119,5 @@ export default {
   getUserInfo,
   getBoardList,
   getUserNumber,
+  getUserName,
 };
