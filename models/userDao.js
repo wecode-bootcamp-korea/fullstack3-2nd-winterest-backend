@@ -90,6 +90,55 @@ const getUserByUserNumber = async userNumber => {
   return userInfo;
 };
 
+const getBoardByUserNumber = async userNumber => {
+  const boardList = await prisma.$queryRaw`
+    SELECT
+      board.id,
+      board.name
+    FROM
+      board
+    JOIN
+      user
+    ON
+      board.user_id = user.id
+    WHERE
+      user.user_number = ${userNumber}
+  `;
+
+  return boardList;
+};
+
+const getFollowByUserId = async (followerId, followingId) => {
+  const [{ isFollowing }] = await prisma.$queryRaw`
+    SELECT EXISTS
+    (
+      SELECT
+        *
+      FROM
+        follow
+      WHERE
+        follower_id = ${followerId}
+      AND
+        following_id = ${followingId}
+    ) AS isFollowing
+  `;
+
+  return !!isFollowing;
+};
+
+const getUserNumberByUserId = async userId => {
+  const [{ userNumber }] = await prisma.$queryRaw`
+    SELECT
+      user.user_number AS userNumber
+    FROM
+      user
+    WHERE
+      user.id = ${userId}
+  `;
+
+  return userNumber;
+};
+
 export default {
   getUserByEmail,
   createUser,
@@ -97,4 +146,7 @@ export default {
   createUserBySNSId,
   createBoard,
   getUserByUserNumber,
+  getBoardByUserNumber,
+  getFollowByUserId,
+  getUserNumberByUserId,
 };

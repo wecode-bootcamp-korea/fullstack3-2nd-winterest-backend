@@ -69,6 +69,33 @@ const createTag = async (tagName, createdWinId) => {
   return true;
 };
 
+const createTagByTagName = async tagName => {
+  await prisma.$queryRaw`
+    INSERT INTO
+      tag
+      (
+        name
+      )
+    VALUES
+    (
+      ${tagName}
+    )
+  `;
+
+  const [{ id }] = await prisma.$queryRaw`
+    SELECT
+      tag.id
+    FROM
+      tag
+    ORDER BY
+      id
+    DESC
+    LIMIT 1
+  `;
+
+  return id;
+};
+
 // 2. 게시물을 board에 등록
 const createWinOnBoard = async (winId, boardId) => {
   await prisma.$queryRaw`
@@ -163,7 +190,8 @@ const getWinByWinId = async winId => {
       win.updated_at AS updateAt,
       user_id AS authorId,
       user.name AS author,
-      user.follower_count AS followerCount
+      user.follower_count AS followerCount,
+      user.user_number AS userNumber
     FROM
       win
     JOIN
@@ -181,6 +209,7 @@ const getWinByWinId = async winId => {
 const getTagByWinId = async winId => {
   const tags = await prisma.$queryRaw`
     SELECT
+      tag.id,
       tag.name
     FROM
       win
@@ -203,6 +232,7 @@ const getTagByWinId = async winId => {
 const getBoardAndWinByWinIdAndUserId = async (winId, userId) => {
   const isSaved = await prisma.$queryRaw`
     SELECT
+      board.id,
       board.name
     FROM
       board_and_win
@@ -251,7 +281,7 @@ const getBoardIdByWinId = async winId => {
 };
 
 // 3. 게시물의 board id 수정
-const updateBoardOnWin = async (winId, boardId) => {
+const updateBoardOnWin = async (winId, beforeBoardId, boardId) => {
   await prisma.$queryRaw`
     UPDATE
       board_and_win
@@ -259,9 +289,36 @@ const updateBoardOnWin = async (winId, boardId) => {
       board_id=${boardId}
     WHERE
       win_id=${winId}
+    AND
+      board_id=${beforeBoardId}
   `;
 
   return true;
+};
+
+const deleteTagAndWinByWinId = async winId => {
+  return await prisma.$queryRaw`
+    DELETE FROM
+      tag_and_win
+    WHERE
+      tag_and_win.win_id=${winId}
+  `;
+};
+
+const updateTagAndWin = async (winId, tag) => {
+  return await prisma.$queryRaw`
+    INSERT INTO
+      tag_and_win
+      (
+        win_id,
+        tag_id
+      )
+    VALUES
+    (
+      ${winId},
+      ${tag}
+    )
+  `;
 };
 
 // 게시물 삭제
@@ -350,6 +407,62 @@ const getFollowByUserId = async (followerId, followingId) => {
   return !!isFollowing;
 };
 
+const getBoardIdByWinIdAndUserId = async (winId, userId) => {
+  const [{ id }] = await prisma.$queryRaw`
+    SELECT
+      board.id
+    FROM
+      win
+    JOIN
+      board_and_win
+    ON
+      win.id = board_and_win.win_id
+    JOIN
+      board
+    ON
+      board_and_win.board_id = board.id
+    JOIN
+      user
+    ON
+      board.user_id = user.id
+    WHERE
+      win.id = ${winId}
+    AND
+      user.id = ${userId}
+  `;
+
+  return id;
+};
+
+const getTagByTagName = async tagName => {
+  const [{ isExist }] = await prisma.$queryRaw`
+      SELECT EXISTS
+      (
+        SELECT
+          *
+        FROM
+          tag
+        WHERE
+          tag.name = ${tagName}
+      ) AS isExist
+    `;
+
+  return !!isExist;
+};
+
+const getTagIdByTagName = async tagName => {
+  const [{ tagId }] = await prisma.$queryRaw`
+    SELECT
+      tag.id AS tagId
+    FROM
+      tag
+    WHERE
+      tag.name = ${tagName}
+  `;
+
+  return tagId;
+};
+
 export default {
   createWin,
   createWinOnBoard,
@@ -360,11 +473,17 @@ export default {
   getTagByWinId,
   getBoardAndWinByWinIdAndUserId,
   updateWin,
+  deleteTagAndWinByWinId,
+  updateTagAndWin,
   getBoardIdByWinId,
   getUrlByWinId,
   deleteWinByWinId,
   getUserIdByWinId,
   createTag,
+  createTagByTagName,
   getBoardOnWin,
   getFollowByUserId,
+  getBoardIdByWinIdAndUserId,
+  getTagByTagName,
+  getTagIdByTagName,
 };

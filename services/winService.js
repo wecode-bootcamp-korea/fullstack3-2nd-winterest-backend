@@ -46,7 +46,8 @@ const getWinDetail = async (winId, userId) => {
 };
 
 // 게시물 수정
-const modifyWin = async (winId, title, desc, boardId, userId) => {
+const modifyWin = async (winId, title, desc, boardId, tags, userId) => {
+  console.log(winId, title, desc, boardId, tags, userId);
   const author = await winDao.getUserIdByWinId(winId);
 
   if (author === userId) {
@@ -56,7 +57,19 @@ const modifyWin = async (winId, title, desc, boardId, userId) => {
     const curDateKorea = new Date(utc + timeDiff);
 
     await winDao.updateWin(winId, title, desc, curDateKorea);
-    await winDao.updateBoardOnWin(winId, boardId);
+    const beforeBoardId = await winDao.getBoardIdByWinIdAndUserId(
+      winId,
+      userId,
+    );
+    await winDao.updateBoardOnWin(winId, beforeBoardId, boardId);
+    await winDao.deleteTagAndWinByWinId(winId);
+
+    for (let tag of tags) {
+      const isExistTag = await winDao.getTagByTagName(tag.name);
+      if (!isExistTag) await winDao.createTagByTagName(tag.name);
+      const tagId = await winDao.getTagIdByTagName(tag.name);
+      await winDao.updateTagAndWin(winId, tagId);
+    }
   } else {
     const error = new Error('NO_PERMISSION');
 
@@ -110,8 +123,9 @@ const saveWin = async (winId, boardId, userId) => {
   }
 };
 
-const modifySavedWin = async (winId, boardId) => {
-  await winDao.updateBoardOnWin(winId, boardId);
+const modifySavedWin = async (winId, boardId, userId) => {
+  const beforeBoardId = await winDao.getBoardIdByWinIdAndUserId(winId, userId);
+  await winDao.updateBoardOnWin(winId, beforeBoardId, boardId);
 
   return true;
 };

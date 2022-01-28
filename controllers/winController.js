@@ -9,7 +9,6 @@ const uploadWin = async (req, res) => {
     const { boardId } = req.body;
     const userId = req.userId;
     const tagNames = req.body.tagNames;
-    const tagName = tagNames.replace(/ /g, '').split(',');
 
     await winService.uploadWin(
       fileLocation,
@@ -17,7 +16,7 @@ const uploadWin = async (req, res) => {
       desc,
       boardId,
       userId,
-      tagName,
+      tagNames.split(','),
     );
 
     return res.status(201).json({ message: 'CREATE_SUCCESS' });
@@ -50,10 +49,10 @@ const getWinDetail = async (req, res) => {
 const modifyWin = async (req, res) => {
   try {
     const winId = req.params.winId;
-    const { title, desc, boardId } = req.body;
+    const { title, desc, boardId, tags } = req.body;
     const userId = req.userId;
 
-    await winService.modifyWin(winId, title, desc, boardId, userId);
+    await winService.modifyWin(winId, title, desc, boardId, tags, userId);
 
     return res.status(200).json({ message: 'MODIFY_SUCCESS' });
   } catch (err) {
@@ -97,8 +96,9 @@ const saveWin = async (req, res) => {
 
 const modifySavedWin = async (req, res) => {
   const { winId, boardId } = req.body;
+  const userId = req.userId;
 
-  await winService.modifySavedWin(winId, boardId);
+  await winService.modifySavedWin(winId, boardId, userId);
 
   return res.status(200).json({ message: 'MODIFY_SUCCESS' });
 };

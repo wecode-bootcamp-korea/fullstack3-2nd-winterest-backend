@@ -2,7 +2,6 @@ import userDao from '../models/userDao';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
-import boardDao from '../models/boardDao';
 
 const { SECRET } = process.env;
 
@@ -87,10 +86,31 @@ const signInKakao = async accessToken => {
 
 const getUserInfo = async (userId, userNumber) => {
   const userInfo = await userDao.getUserByUserNumber(userNumber);
+  const isFollowing = await userDao.getFollowByUserId(userId, userInfo.id);
 
   userInfo.isMine = userInfo.id === userId;
+  userInfo.isFollowing = isFollowing;
 
   return userInfo;
 };
 
-export default { signUp, signIn, signInKakao, getUserInfo };
+const getBoardList = async userNumber => {
+  const boardList = await userDao.getBoardByUserNumber(userNumber);
+
+  return boardList;
+};
+
+const getUserNumber = async userId => {
+  const userNumber = await userDao.getUserNumberByUserId(userId);
+
+  return userNumber;
+};
+
+export default {
+  signUp,
+  signIn,
+  signInKakao,
+  getUserInfo,
+  getBoardList,
+  getUserNumber,
+};
