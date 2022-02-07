@@ -75,6 +75,11 @@ const signInKakao = async accessToken => {
     );
 
     await userDao.createBoard(createUser.id);
+    const accessTokenWinterest = jwt.sign({ id: createUser.id }, SECRET, {
+      expiresIn: '1h',
+    });
+
+    return accessTokenWinterest;
   }
 
   const accessTokenWinterest = jwt.sign({ id: userCheck.id }, SECRET, {
