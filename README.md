@@ -94,13 +94,19 @@
 <정태영>
 
 1. win(게시물) API(CRD) 구현
-   - win create API와 aws S3를 연동(win 생성시 이미지 파일이 aws S3에 저장됨)
-   - win delete API와 aws S3를 연동(win 삭제시 이미지 파일이 aws S3에서 삭제됨)
+
+- win create API와 aws S3를 연동(win 생성시 이미지 파일이 aws S3에 저장됨)
+- win delete API와 aws S3를 연동(win 삭제시 이미지 파일이 aws S3에서 삭제됨)
+
 2. 댓글 API(CRUD) 구현
-   - 재귀 호출을 이용한 대댓글 기능 구현
+
+- 재귀 호출을 이용한 대댓글 기능 구현
+
 3. 댓글 좋아요 API(CRD) 구현
 4. 보드(게시물 저장) API(CRUD) 구현
-   - board를 본인만 수정, 삭제 할 수 있도록 인가 과정 구현
+
+- board를 본인만 수정, 삭제 할 수 있도록 인가 과정 구현
+
 5. 팔로우 API(CRD) 구현
 
 <최종민>
