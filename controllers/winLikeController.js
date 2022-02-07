@@ -15,7 +15,7 @@ const likeWin = async (req, res) => {
 
 const isHeart = async (req, res) => {
   try {
-    const { winId } = req.body;
+    const { winId } = req.params;
     const userId = req.userId;
     const heart = await winLikeService.isHeart(winId, userId);
 
