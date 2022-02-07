@@ -14,7 +14,7 @@
 
 <풀스택>
 
-<img src="https://user-images.githubusercontent.com/90169703/152270561-f44068bf-81d4-4b65-9124-2dafdc96d0fc.jpg" width="50px" height="50px"/> 최종민 &nbsp; [기술블로그]()
+<img src="https://user-images.githubusercontent.com/90169703/152270561-f44068bf-81d4-4b65-9124-2dafdc96d0fc.jpg" width="50px" height="50px"/> 최종민 &nbsp; [기술블로그](https://quark21.tistory.com/category/Programming)
 
 <백엔드>
 
@@ -140,5 +140,5 @@
 
 - 강민수 minsu910725@gmail.com
 - 박태준
-- 최종민
+- 최종민 quark4904@gmail.com
 - 정태영 dev.taeyeong@gmail.com
