@@ -2,7 +2,7 @@
 
 ![Winterest-logo](https://user-images.githubusercontent.com/90169703/152731312-fdbc3a49-8155-4d26-9c8b-aad868c3045a.png)
 
-[winterest 시현 영상 url]()
+[winterest 시연 영상 url]()
 
 ## Members
 
