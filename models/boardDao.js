@@ -138,6 +138,24 @@ const deleteBoard = async boardId => {
   return true;
 };
 
+const getBoardByUserNumber = async userNumber => {
+  const boardList = await prisma.$queryRaw`
+    SELECT
+      board.id,
+      board.name
+    FROM
+      board
+    JOIN
+      user
+    ON
+      board.user_id = user.id
+    WHERE
+      user.user_number = ${userNumber}
+  `;
+
+  return boardList;
+};
+
 export default {
   getBoardByBoardNameAndUserId,
   getBoardListByUserId,

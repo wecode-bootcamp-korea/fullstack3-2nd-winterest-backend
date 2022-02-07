@@ -74,13 +74,11 @@ const signInKakao = async accessToken => {
       userNumber,
     );
 
-    await userDao.createBoard(createUser.id);
-    const accessTokenWinterest = jwt.sign({ id: createUser.id }, SECRET, {
-      expiresIn: '1h',
-    });
+    // await userDao.createBoard(createUser.id); -> 제거
+   }
 
-    return accessTokenWinterest;
-  }
+  // console.log('user id: ', userCheck.id)
+  // 새로 가입한 유저가 발급받는 토큰 속에 들어있는 `id`가 `undefined` 일 것 같습니다. 확인부탁드려요 :)
 
   const accessTokenWinterest = jwt.sign({ id: userCheck.id }, SECRET, {
     expiresIn: '1h',
@@ -106,15 +104,11 @@ const getBoardList = async userNumber => {
 };
 
 const getUserNumber = async userId => {
-  const userNumber = await userDao.getUserNumberByUserId(userId);
-
-  return userNumber;
+  return await userDao.getUserNumberByUserId(userId);
 };
 
 const getUserName = async userId => {
-  const userName = await userDao.getUserNameByUserId(userId);
-
-  return userName;
+  return await userDao.getUserNameByUserId(userId);
 };
 
 export default {

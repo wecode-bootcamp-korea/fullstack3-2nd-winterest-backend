@@ -18,12 +18,13 @@ router.post(
   winController.uploadWin,
 );
 router.get('/', winController.getWinList);
-
-router.post('/save', validateToken, winController.saveWin);
-router.put('/save', validateToken, winController.modifySavedWin);
+router.post('/', validateToken, winController.saveWin);
+router.put('/', validateToken, winController.modifySavedWin);
 
 router.get('/:winId', validateUser, winController.getWinDetail);
 router.put('/:winId', validateToken, winController.modifyWin);
 router.delete('/:winId', validateToken, winController.deleteWin);
+
+router.post('/:winId/like', validateToken, winController.likeWin);
 
 export default router;
