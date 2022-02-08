@@ -5,5 +5,6 @@ import winLikeController from '../controllers/winLikeController';
 const router = express.Router();
 
 router.post('/', validateToken, winLikeController.likeWin);
+router.get('/:winId', validateToken, winLikeController.isHeart);
 
 export default router;

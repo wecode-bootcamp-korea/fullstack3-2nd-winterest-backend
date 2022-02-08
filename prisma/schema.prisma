@@ -92,9 +92,9 @@ model Interest {
 model WinLike {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @map("created_at")
-  User      User     @relation(fields: [userId], references: [id])
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int      @map("user_id")
-  Win       Win      @relation(fields: [winId], references: [id])
+  Win       Win      @relation(fields: [winId], references: [id], onDelete: Cascade)
   winId     Int      @map("win_id")
 
   @@map("win_like")
@@ -122,9 +122,9 @@ model Comment {
 model CommentLike {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @map("created_at")
-  Comment   Comment  @relation(fields: [commentId], references: [id])
+  Comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
   commentId Int      @map("comment_id")
-  User      User     @relation(fields: [userId], references: [id])
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int      @map("user_id")
 
   @@map("comment_like")

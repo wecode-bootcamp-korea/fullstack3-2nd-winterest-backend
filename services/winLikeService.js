@@ -8,4 +8,8 @@ const likeWin = async (winId, userId) => {
   }
 };
 
-export default { likeWin };
+const isHeart = async (winId, userId) => {
+  return await winLikeDao.isHeart(winId, userId);
+};
+
+export default { likeWin, isHeart };

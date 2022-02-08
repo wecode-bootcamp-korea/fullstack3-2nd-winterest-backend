@@ -77,4 +77,25 @@ const createLike = async (winId, userId) => {
   return quantity.like_count;
 };
 
-export default { getWinLikeByWinIdAndUserId, deleteLike, createLike };
+const isHeart = async (winId, userId) => {
+  const [{ heart }] = await prisma.$queryRaw`
+    SELECT EXISTS
+    (
+      SELECT
+        id
+      FROM
+        win_like
+      WHERE
+        win_id=${winId}
+      AND
+        user_id=${userId}
+    ) AS heart`;
+  return !!heart;
+};
+
+export default {
+  getWinLikeByWinIdAndUserId,
+  deleteLike,
+  createLike,
+  isHeart,
+};
