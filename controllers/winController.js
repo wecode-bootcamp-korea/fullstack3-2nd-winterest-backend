@@ -32,7 +32,6 @@ const getWinList = async (req, res) => {
     pageNumber,
     tagName === 'undefined' ? undefined : tagName,
   );
-
   return res.status(200).json({ winList });
 };
 

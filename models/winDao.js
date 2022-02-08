@@ -141,6 +141,15 @@ const readWin = async pageNumber => {
 
   return winList;
 };
+// 전체 win 게시물 수량 조회
+const getTotalWinQuantity = async () => {
+  const count = await prisma.$queryRaw`
+  SELECT COUNT(*) as count
+  FROM 
+    win
+  `;
+  return count;
+};
 
 // tag 게시물 조회 (10개씩)
 const searchTag = async (pageNumber, tagName) => {
@@ -178,6 +187,32 @@ const searchTag = async (pageNumber, tagName) => {
   LIMIT 10 OFFSET ${(pageNumber - 1) * 10}
   `;
   return tagList;
+};
+
+// 특정 tag가 포함된 win 게시물 수량 조회
+const getTotalWinQuantityForTag = async tagName => {
+  const [findTagId] = await prisma.$queryRaw`
+  SELECT 
+    id
+  FROM
+    tag
+  WHERE
+    tag.name = ${tagName}
+    `;
+
+  if (findTagId === undefined) {
+    return [{ count: 0 }];
+  } else {
+    const count = await prisma.$queryRaw`
+    SELECT COUNT(*) as count
+    FROM 
+      tag_and_win
+    WHERE
+      tag_and_win.tag_id = ${findTagId.id}
+    `;
+    console.log(count);
+    return count;
+  }
 };
 
 // 게시물 상세 조회
@@ -469,7 +504,9 @@ export default {
   createWin,
   createWinOnBoard,
   readWin,
+  getTotalWinQuantity,
   searchTag,
+  getTotalWinQuantityForTag,
   getWinByWinId,
   updateBoardOnWin,
   getTagByWinId,
