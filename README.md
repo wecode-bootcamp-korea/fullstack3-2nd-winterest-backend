@@ -2,25 +2,25 @@
 
 ![Winterest-logo](https://user-images.githubusercontent.com/90169703/152731312-fdbc3a49-8155-4d26-9c8b-aad868c3045a.png)
 
-[winterest 시연 영상 url]()
+## 프로젝트 사이트 기능 구현 영상
 
-## Members
+[winterest 구현 영상]()
 
 ## Members
 
 <프론트 엔드>
 
-<img src="https://user-images.githubusercontent.com/90169703/152270453-d84bbe12-ce24-4b7a-94a2-319125ee3f11.jpg" width="50px" height="50px"/> 강민수 &nbsp; [기술블로그](https://velog.io/@minsu8834),  [깃허브](https://github.com/minchodang)
+<img src="https://user-images.githubusercontent.com/90169703/152270453-d84bbe12-ce24-4b7a-94a2-319125ee3f11.jpg" width="50px" height="50px"/> 강민수 &nbsp; [기술블로그](https://velog.io/@minsu8834), [깃허브](https://github.com/minchodang)
 
-<img src="https://user-images.githubusercontent.com/90169703/152270576-9b3a2a21-dbbe-4294-ae58-56dfb67e12bb.jpg" width="50px" height="50px"/> 박태준 &nbsp; [기술블로그](),  [깃허브](https://github.com/TaeJoonPark)
+<img src="https://user-images.githubusercontent.com/90169703/152270576-9b3a2a21-dbbe-4294-ae58-56dfb67e12bb.jpg" width="50px" height="50px"/> 박태준 &nbsp; [기술블로그](https://velog.io/@tjpark1028), [깃허브](https://github.com/TaeJoonPark)
 
 <풀스택>
 
-<img src="https://user-images.githubusercontent.com/90169703/152270561-f44068bf-81d4-4b65-9124-2dafdc96d0fc.jpg" width="50px" height="50px"/> 최종민 &nbsp; [기술블로그](https://quark21.tistory.com/category/Programming),  [깃허브](https://github.com/quark4904/)
+<img src="https://user-images.githubusercontent.com/90169703/152270561-f44068bf-81d4-4b65-9124-2dafdc96d0fc.jpg" width="50px" height="50px"/> 최종민 &nbsp; [기술블로그](https://quark21.tistory.com/category/Programming), [깃허브](https://github.com/quark4904/)
 
 <백엔드>
 
-<img src="https://user-images.githubusercontent.com/90169703/152270596-805d1d9c-07b0-4fee-9dfb-6cf6d9deff80.jpg" width="50px" height="50px"/> 정태영 &nbsp; [기술블로그](https://dev-taeyeong.github.io),  [깃허브](https://github.com/dev-taeyeong)
+<img src="https://user-images.githubusercontent.com/90169703/152270596-805d1d9c-07b0-4fee-9dfb-6cf6d9deff80.jpg" width="50px" height="50px"/> 정태영 &nbsp; [기술블로그](https://dev-taeyeong.github.io), [깃허브](https://github.com/dev-taeyeong)
 
 <br>
 
@@ -28,29 +28,34 @@
 
 대표적인 사진 기반 sns 사이트인 pinterest 사이트의 주요기능들을 모티브 삼아 sns 사이트 윈터레스트 개발.
 
-- 기간 : 22.01.17~ 22.01.28
+- 기간 : 2주
 - 구성 : Front-end 2명, Full-stack 1명, Back-end 1명
 
-### 레포지토리 주소
+## 레포지토리 주소
 
 - [Front-end Github](https://github.com/wecode-bootcamp-korea/fullstack3-2nd-winterest-frontend)
 - [Back-end Github](https://github.com/wecode-bootcamp-korea/fullstack3-2nd-winterest-backend)
 
-### Notion 프로젝트 소개
+## Notion 프로젝트 소개
 
-### 프로젝트 사이트 기능 구현 영상
+- [윈터레스트 노션 페이지](https://wecode.notion.site/winterest-0fe4898e90d2407897bff2e9dca89812)
 
-[winterest 구현 영상]()
-
-### DB modeling
+## DB modeling
 
 - winterest db 자료 구조
 
+![스크린샷 2022-02-08 오전 10 59 43](https://user-images.githubusercontent.com/90169703/152903563-2b2e7873-348a-4a1c-9a87-164ae2e465e6.png)
+
+## 사용한 라이브러리
+
+- react-masonry-css
+  https://www.npmjs.com/package/react-masonry-css
+
 ### Technologies
 
-- 공통
+<!-- - 공통
 
-<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=#181717"> <img src="https://img.shields.io/badge/visualstudiocode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
+<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=#181717"> <img src="https://img.shields.io/badge/visualstudiocode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white"> -->
 
 - Front-end
 
@@ -88,6 +93,16 @@
 - 보드 이름 수정 버튼 모달창 구현
 
 <박태준>
+
+1. 윈(카드) 디테일 페이지 ui 및 기능 구현
+
+- 이미지 상세페이지 동적 기능(팔로우, 댓글+대댓글, 좋아요 기능, 저장/저장됨) 및 UI 구현
+- 유저 정보에 따라 다른 수정페이지 모달화면으로 구현
+- 태그 수정 기능 (enter 키와 마우스 클릭을 통해 추가/삭제 동작 디자인적으로 구현)
+
+2. 윈(카드) 업로드 페이지 ui 및 기능 구현
+
+- formData와 axios를 이용한 이미지 업로드 기능 및 이미지 미리보기 UI 구현
 
 <최종민>
 
@@ -141,6 +156,6 @@
 ### Contact US
 
 - 강민수 minsu910725@gmail.com
-- 박태준
+- 박태준 pinedelo30@gmail.com
 - 최종민 quark4904@gmail.com
 - 정태영 dev.taeyeong@gmail.com
