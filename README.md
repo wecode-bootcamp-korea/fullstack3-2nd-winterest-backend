@@ -4,7 +4,7 @@
 
 ## 프로젝트 사이트 기능 구현 영상
 
-[winterest 구현 영상]()
+[winterest 구현 영상](https://youtu.be/sfeJfl8CoCw)
 
 ## Members
 
@@ -51,11 +51,7 @@
 - react-masonry-css
   https://www.npmjs.com/package/react-masonry-css
 
-### Technologies
-
-<!-- - 공통
-
-<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=#181717"> <img src="https://img.shields.io/badge/visualstudiocode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white"> -->
+## Technologies
 
 - Front-end
 
@@ -65,7 +61,7 @@
 
 <img src="https://img.shields.io/badge/prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white"> <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=node.js&logoColor=white"> <img src="https://img.shields.io/badge/postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white"> <img src="https://img.shields.io/badge/express-000000?style=for-the-badge&logo=express&logoColor=white">
 
-### 담당자 별 구현 기능.
+## 담당자 별 구현 기능.
 
 [ Front-end ]
 
