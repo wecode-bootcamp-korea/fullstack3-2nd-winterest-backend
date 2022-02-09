@@ -21,11 +21,17 @@ const getWinList = async (pageNumber, tagName) => {
   if (!tagName) {
     const winList = await winDao.readWin(pageNumber);
 
-    return winList;
+    const totalWinQuantity = await winDao.getTotalWinQuantity();
+
+    return [winList, totalWinQuantity];
   } else {
     const tagList = await winDao.searchTag(pageNumber, tagName);
 
-    return tagList;
+    const getTotalWinQuantityForTag = await winDao.getTotalWinQuantityForTag(
+      tagName,
+    );
+
+    return [tagList, getTotalWinQuantityForTag];
   }
 };
 
