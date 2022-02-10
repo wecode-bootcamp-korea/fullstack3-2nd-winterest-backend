@@ -21,10 +21,8 @@ const makeBoard = async (boardName, userId) => {
 };
 
 // 유저 board 목록 조회
-const getBoardList = async userId => {
-  const boardList = await boardDao.getBoardListByUserId(userId);
-
-  return boardList;
+const getBoardListByUserId = async userId => {
+  return await boardDao.getBoardListByUserId(userId);
 };
 
 // 유저 board의 win 목록 조회
@@ -46,28 +44,40 @@ const editBoardName = async (boardId, boardName, userId) => {
     userId,
   );
 
-  if (author === userId && !isExist) {
-    const curDate = new Date();
-    const utc = curDate.getTime() + curDate.getTimezoneOffset() * 60 * 1000;
-    const timeDiff = 18 * 60 * 60 * 1000;
-    const curDateKorea = new Date(utc + timeDiff);
-
-    await boardDao.updateBoard(boardId, boardName, curDateKorea);
-
-    return true;
-  } else if (author !== userId) {
+  if (author !== userId) {
     const error = new Error('NO_PERMISSION');
-
     error.statusCode = 400;
-
-    throw error;
-  } else {
-    const error = new Error('ALREADY_EXIST');
-
-    error.statusCode = 400;
-
     throw error;
   }
+
+  if (isExist) {
+    const error = new Error('ALREADY_EXIST');
+    error.statusCode = 400;
+    throw error;
+  }
+
+  // if (author === userId && !isExist) { // 정상 케이스를 if문 에 넣어두는 것이 어색합니다 :)
+  const curDate = new Date();
+  const utc = curDate.getTime() + curDate.getTimezoneOffset() * 60 * 1000;
+  const timeDiff = 18 * 60 * 60 * 1000;
+  const curDateKorea = new Date(utc + timeDiff);
+
+  await boardDao.updateBoard(boardId, boardName, curDateKorea);
+
+  return true;
+  // } else if (author !== userId) {
+  //   const error = new Error('NO_PERMISSION');
+
+  //   error.statusCode = 400;
+
+  //   throw error;
+  // } else {
+  //   const error = new Error('ALREADY_EXIST');
+
+  //   error.statusCode = 400;
+
+  //   throw error;
+  // }
 };
 
 // board 삭제

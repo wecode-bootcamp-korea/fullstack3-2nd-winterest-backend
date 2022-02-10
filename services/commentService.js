@@ -55,7 +55,7 @@ const modifyComment = async (commentId, content, userId) => {
 
     throw error;
   }
-};
+}; // 에러 경우 반전시켜서 부정상황일때를 if문으로 예외처리해주세요. 
 
 // 댓글 삭제
 const deleteComment = async (commentId, userId) => {

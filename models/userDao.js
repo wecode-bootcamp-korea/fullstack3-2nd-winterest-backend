@@ -41,6 +41,11 @@ const getUserBySNSId = async snsId => {
 };
 
 const createUserBySNSId = async (snsId, nickName, userNumber) => {
+  await prisma.$transaction([
+    prisma.$queryRaw``,  // insert into 로 User 가입
+    prisma.$executeRaw``, // user Id select
+    prisma.$queryRaw`` // board를 생성하는 Insert into
+  ])
   await prisma.$queryRaw`
       INSERT INTO
         user (sns_id, name, user_number)

@@ -42,6 +42,7 @@ const createTag = async (tagName, createdWinId) => {
   const tagNameIds = [];
 
   for (let i = 0; i < tagName.length; i++) {
+    // transaction 으로 묶어주기 <start>
     const [createTag] = await prisma.$queryRaw`
     INSERT IGNORE INTO
       tag (name)
@@ -64,6 +65,7 @@ const createTag = async (tagName, createdWinId) => {
     VALUES
       (${tagNameIds[i]}, ${createdWinId})
     `;
+    // <end>
   }
 
   return true;
@@ -71,17 +73,12 @@ const createTag = async (tagName, createdWinId) => {
 
 const createTagByTagName = async tagName => {
   await prisma.$queryRaw`
-    INSERT INTO
-      tag
-      (
-        name
-      )
-    VALUES
-    (
-      ${tagName}
-    )
+    INSERT INTO tag(name)
+    VALUES (${tagName})
   `;
 
+  // 테이블에 방금 넣은 데이터가 선택될 수 있다는 것을 보장하기 위한 transaction 필요
+  // or LOCK TABLE. [optional]
   const [{ id }] = await prisma.$queryRaw`
     SELECT
       tag.id
@@ -115,6 +112,7 @@ const createWinOnBoard = async (winId, boardId) => {
 
 // 게시물 조회 (10개씩)
 const readWin = async pageNumber => {
+  const LIMIT = 10
   const winList = await prisma.$queryRaw`
     SELECT
       win.id,
@@ -136,19 +134,17 @@ const readWin = async pageNumber => {
     ORDER BY
       id
     DESC
-    LIMIT 10 OFFSET ${(pageNumber - 1) * 10}
-  `;
+    LIMIT ${LIMIT} OFFSET ${(pageNumber - 1) * LIMIT}
+  `; // Number after `LIMIT` can be provided by arguments or set as a CONSTANT
 
   return winList;
 };
 // 전체 win 게시물 수량 조회
 const getTotalWinQuantity = async () => {
-  const count = await prisma.$queryRaw`
-  SELECT COUNT(*) as count
-  FROM 
-    win
+  return await prisma.$queryRaw`
+    SELECT COUNT(*) as count
+    FROM win
   `;
-  return count;
 };
 
 // tag 게시물 조회 (10개씩)
@@ -187,10 +183,13 @@ const searchTag = async (pageNumber, tagName) => {
   LIMIT 10 OFFSET ${(pageNumber - 1) * 10}
   `;
   return tagList;
+  // `how to search in sql with text containig letter`
 };
 
 // 특정 tag가 포함된 win 게시물 수량 조회
 const getTotalWinQuantityForTag = async tagName => {
+  // 1. tag와 tag_and_win을 JOIN하면 (especially LEFT JOIN), SQL 한 번으로 진행하실 수 있을 것 같습니다.
+  // 2. DAO에 자바스크립트 로직인 `if-else` 구문이 있는 것이 어색합니다. (위 1번을 적용하시면, 로직(if-else)없이도 해결하게 됩니다. )
   const [findTagId] = await prisma.$queryRaw`
   SELECT 
     id
@@ -307,7 +306,7 @@ const updateWin = async (winId, title, desc, date) => {
 const getBoardIdByWinId = async winId => {
   const boardId = await prisma.$queryRaw`
     SELECT
-      board_id
+      board_id AS boardId
     FROM
       board_and_win
     WHERE
@@ -342,7 +341,8 @@ const deleteTagAndWinByWinId = async winId => {
   `;
 };
 
-const updateTagAndWin = async (winId, tag) => {
+const createTagAndWin = async (winId, tag) => {
+  // 한 번에 여러 row 추가하는 방법 가운데 하나로 BULK INSERT 가 있습니다. 적용 고려.
   return await prisma.$queryRaw`
     INSERT INTO
       tag_and_win
